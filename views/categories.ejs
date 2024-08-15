@@ -9,7 +9,7 @@
     <h1>Categories</h1>
     <ul>
         <% categories.forEach(category => { %>
-            <li><a href="/categories/<%= category.name.toLowerCase() %>"><%= category.name %></a></li>
+            <li><a href="/categories/<%= category.name %>"><%= category.name %></a></li>
         <% }); %>
     </ul>
 </body>
