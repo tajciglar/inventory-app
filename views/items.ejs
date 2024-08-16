@@ -66,6 +66,12 @@
                 <% }); %>
             </tbody>
         </table>
+        <form method="POST" action="/categories/<%= category %>">
+            <input type="text" name="itemName" placeholder="Enter item name" required>
+            <input type="number" name="inventory" placeholder="Enter inventory count" required>
+            <input type="number" step="0.01" name="price" placeholder="Enter price" required>
+            <button type="submit">ADD ITEM</button>
+        </form>
         <div class="back-link">
             <a href="/categories">Back to Categories</a>
         </div>

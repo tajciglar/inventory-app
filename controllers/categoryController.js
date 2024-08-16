@@ -13,14 +13,37 @@ async function getCategoryByName(req, res) {
     const category = req.params.categoryName;
     try {
         const items = await db.getItems(category);
-        console.log(items);
         res.render("items", { category, items });
     } catch (err) {
         res.status(500).send('Internal Server Error');
     }
 }
 
+async function addNewCategory(req, res) {
+    const newCategory = req.body.newCategory;
+    try {
+        await db.addNewCategory(newCategory);
+    } catch (err) {
+        res.status(500).send('Internal Server Error');
+    }
+}
+
+async function addNewItem(req, res) {
+    const newItem = req.body; 
+    const categoryName = req.params.categoryName; 
+
+    try {
+        await db.addNewItem(categoryName, newItem);
+        res.redirect(`/categories/${categoryName}`); 
+    } catch (err) {
+        console.error('Error adding new item:', err);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
 module.exports = {
     getCategories,
-    getCategoryByName
+    getCategoryByName,
+    addNewCategory,
+    addNewItem
 }
