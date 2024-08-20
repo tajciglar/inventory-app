@@ -12,7 +12,8 @@ async function getCategories(req, res) {
 async function getCategoryByName(req, res) {
     const category = req.params.categoryName;
     try {
-        const items = await db.getItems(category);
+        let items = await db.getItems(category);
+        items = items.map(item => ({ ...item, editing: false }));
         res.render("items", { category, items });
     } catch (err) {
         res.status(500).send('Internal Server Error');
@@ -42,8 +43,8 @@ async function addNewItem(req, res) {
 }
 
 async function deleteItem(req, res) {
-    const itemId = req.params.itemId;
-    const categoryName = req.params.categoryName; 
+    const {categoryName, itemId} = req.params;
+
     try {
         await db.deleteItem( itemId);
         res.redirect(`/categories/${categoryName}`); 
@@ -52,10 +53,41 @@ async function deleteItem(req, res) {
     }
 }
 
+async function editItem(req, res) {
+    const category = req.params.categoryName;
+    const itemId = parseInt(req.params.itemId, 10);  // Convert itemId to an integer
+
+    try {
+        let items = await db.getItems(category);
+        
+        // Set the isEditing flag for the specific item
+        items = items.map(item => item.id === itemId ? { ...item, isEditing: true } : item);
+
+        res.render("items", { category, items });
+    } catch (err) {
+        console.error('Error editing item:', err);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
+
+async function updateItem(req, res) {
+    const {categoryName, itemId} = req.params;
+    const {inventory, price} = req.body;
+    try {
+        await db.updateItem(inventory, price, itemId);
+        res.redirect(`/categories/${categoryName}`); 
+    } catch (err) {
+        console.error('Error updating item')
+    }
+}
+
 module.exports = {
     getCategories,
     getCategoryByName,
     addNewCategory,
     addNewItem,
-    deleteItem
+    deleteItem,
+    editItem,
+    updateItem
 }

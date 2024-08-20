@@ -7,8 +7,6 @@ const path = require('path');
 app.use('/style', express.static(path.join(__dirname, 'style')));
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
-
-// Middleware to parse JSON bodies (optional, for APIs)
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;

@@ -12,6 +12,7 @@ async function getItems(category) {
             FROM items AS i
             JOIN categories AS c ON i.category_id = c.id
             WHERE c.name = $1
+            ORDER BY i.id ASC;
         `;
         const { rows } = await pool.query(query, [category]);
         return rows; // Ensure that rows are returned for the route handler to use
@@ -66,10 +67,22 @@ async function deleteItem(itemId) {
     
 }
 
+async function updateItem(inventory, price, itemId) {
+    try {
+        const query = `UPDATE items SET inventory = $1, price = $2 WHERE id = $3`;
+        await pool.query(query,  [inventory, price, itemId]);
+    } catch (err) {
+        console.error('Error executing query', err.stack);
+        throw err; 
+    }
+    
+}
+
 module.exports = {
     getCategories,
     getItems,
     addNewCategory,
     addNewItem,
-    deleteItem
+    deleteItem,
+    updateItem
 }
