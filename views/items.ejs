@@ -4,46 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Items in <%= category %></title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-        }
-        h1 {
-            text-align: center;
-            margin-top: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-        }
-        th {
-            background-color: #f4f4f4;
-            text-align: left;
-        }
-        .back-link {
-            display: block;
-            margin: 20px 0;
-            text-align: center;
-        }
-        .back-link a {
-            text-decoration: none;
-            color: #007bff;
-        }
-        .back-link a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <link rel="stylesheet" href="../style/items.css">
 </head>
 <body>
     <div class="container">
@@ -54,6 +15,7 @@
                     <th>Item Name</th>
                     <th>Inventory</th>
                     <th>Price</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,6 +24,11 @@
                         <td><%= item.name %></td>
                         <td><%= item.inventory %></td>
                         <td>$<%= item.price %></td>
+                        <td>
+                            <form action="/categories/<%= category %>/<%= item.id %>/delete" method="POST">
+                                <button type="submit">DELETE ITEM</button>
+                            </form>
+                        </td>
                     </tr>
                 <% }); %>
             </tbody>

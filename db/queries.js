@@ -8,7 +8,7 @@ async function getCategories() {
 async function getItems(category) {
     try {
         const query = `
-            SELECT i.name, i.inventory, i.price
+            SELECT i.id, i.name, i.inventory, i.price
             FROM items AS i
             JOIN categories AS c ON i.category_id = c.id
             WHERE c.name = $1
@@ -55,10 +55,21 @@ async function addNewItem(categoryName, newItem) {
         throw err; 
     }
 }
+async function deleteItem(itemId) {
+    try {
+        const query = `DELETE FROM items WHERE id = $1;`;
+        await pool.query(query, [itemId]);
+    } catch (err) {
+        console.error('Error executing query', err.stack);
+        throw err; 
+    }
+    
+}
 
 module.exports = {
     getCategories,
     getItems,
     addNewCategory,
-    addNewItem
+    addNewItem,
+    deleteItem
 }

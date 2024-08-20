@@ -41,9 +41,21 @@ async function addNewItem(req, res) {
     }
 }
 
+async function deleteItem(req, res) {
+    const itemId = req.params.itemId;
+    const categoryName = req.params.categoryName; 
+    try {
+        await db.deleteItem( itemId);
+        res.redirect(`/categories/${categoryName}`); 
+    } catch (err) {
+        console.error('Error deleting item');
+    }
+}
+
 module.exports = {
     getCategories,
     getCategoryByName,
     addNewCategory,
-    addNewItem
+    addNewItem,
+    deleteItem
 }

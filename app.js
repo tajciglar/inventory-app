@@ -3,6 +3,8 @@ require("dotenv").config();
 const express = require("express");
 const categoryRouter = require("./routes/categoryRouter");
 const app = express();
+const path = require('path');
+app.use('/style', express.static(path.join(__dirname, 'style')));
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 
